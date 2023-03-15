@@ -1,0 +1,107 @@
+*{
+  box-sizing: border-box;
+  
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to top right, #47a897 , #518abf);
+  padding-top: 50px;
+}
+
+.to-do-list{
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 80vh;
+  background-color: #fff;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.header{
+  font-family: 'Montserrat', sans-serif;
+  color: #5e5e5e;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.input-panel{
+  display: flex;
+  width: 100%;
+  padding: 20px 0;
+}
+
+#task-name-input{
+  width: 70%;
+  border-radius: 5px;
+  border: 2px solid lightgray;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+input:active{
+  border: 2px solid grey;
+}
+
+button{
+  width: 30%;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+}
+
+#start-message{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.task-list{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.task {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  border: 2px solid grey;
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.task p {
+  width: 90%;
+}
+
+.task input{
+  width: 10%;
+}
+
+
+.completed {
+  color: green;
+  text-decoration: line-through;
+}
+
+.deleteButton{
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  background-image: url();
+  /* position: relative; */
+}
+
+/* .deleteButton::after{
+  content: 'x';
+  background-color: red;
+  position: absolute;
+  right: 1px;
+} */
+
+
