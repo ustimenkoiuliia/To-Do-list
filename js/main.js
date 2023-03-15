@@ -32,6 +32,7 @@ class Task {
     this.text = text;
     this.isDone = false;
     this.div = null;
+    this.isDeleted = false;
   }
 
   createTask (element) {
@@ -58,7 +59,12 @@ class Task {
       this.div.classList.add('completed');
       input.checked = true;
     }
-    element.append(this.div);
+
+    if (!this.isDeleted) {
+      element.append(this.div);
+    }
+
+    
   }
 
   changeState (element){
@@ -68,6 +74,7 @@ class Task {
 
   deleteTask() {
     this.div.remove();
+    this.isDeleted = true;
   }
 
 }
