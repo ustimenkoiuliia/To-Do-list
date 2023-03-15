@@ -17,23 +17,29 @@
 
     <div class="to-do-list">
 
-      <div class = 'header'>
-        To-Do List
+      <div class="top">
+        <div class = 'header'>
+          To-Do List
+        </div>
+  
+        <div class="input-panel">
+          <input type="text" id="task-name-input" placeholder="Type a new task">
+          <button id="add-task-btn">ADD</button>
+        </div>
+  
+        <div class="task-list">
+          <p id="start-message">There are no new tasks</p>
+        </div>
       </div>
 
-      <div class="input-panel">
-        <input type="text" id="task-name-input" placeholder="Type a new task">
-        <button id="add-task-btn">ADD</button>
+
+      <div class="bottom">
+        <div class="buttons">
+          <button id = 'not-completed-tasks'>Sort not completed</button>
+          <button id = 'show-all'>Show all</button>
+        </div>
       </div>
 
-      <div class="task-list">
-        <p id="start-message">There are no new tasks</p>
-      </div>
-
-      <div class="buttos">
-        <button id = 'not-completed-tasks'>Show not completed only</button>
-        <button id = 'show-all'>Show all</button>
-      </div>
 
     </div>
   </div>

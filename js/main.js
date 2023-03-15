@@ -12,13 +12,15 @@ taskNameInput.addEventListener("keydown", function (e) {
   if (e.code == "Enter") addTaskHandler();
 })
 
-
+notCompleted.addEventListener('click', showNotCompleted);
+showAll.addEventListener('click', showAllTasks)
 
 function addTaskHandler() {
   if (taskNameInput.value) {
     if (!startMessage.hidden) startMessage.hidden = true;
     let newTask = new Task(taskNameInput.value);
     newTask.createTask(taskList);
+    tasks.push(newTask);
     taskNameInput.value = "";
   } else {
     alert('Enter task name')
@@ -39,14 +41,14 @@ class Task {
     let p = document.createElement("p");
     p.innerText = this.text;
   
-    let input = document.createElement("input");
+    let input = document.createElement("div");
+    input.classList.add('checked')
     input.addEventListener("click", () => this.changeState(this.div));
-    input.type = "checkbox";
+    // input.type = "checkbox";
   
-    let deleteButton = document.createElement('input');
-    deleteButton.addEventListener('click', () => this.deleteTask(this.div))
-    deleteButton.type = "button";
-    deleteButton.classList.add('deleteButton')
+    let deleteButton = document.createElement('div');
+    deleteButton.dataset.id = 'delete';
+    deleteButton.addEventListener('click', () => this.deleteTask(this.div));
   
     this.div.append(p);
     this.div.append(input);
@@ -72,8 +74,6 @@ class Task {
 
 
 
-notCompleted.addEventListener('click', showNotCompleted);
-showAll.addEventListener('click', showAllTasks)
 
 function showNotCompleted() {
   taskList.innerHTML = '';
