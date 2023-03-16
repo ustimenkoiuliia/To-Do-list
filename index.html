@@ -13,6 +13,20 @@
 </head>
 <body>
 
+  <style>
+    .checked{
+      background: url(img/check.png) 0 0/auto 100% no-repeat ;
+      cursor: pointer;
+    }
+
+    [data-id="delete"]{
+ 
+      background: url(img/delete.png)  0 0/auto 100% no-repeat ;
+      cursor: pointer;
+ 
+    }
+  </style>
+
   <div class="container">
 
     <div class="to-do-list">
@@ -35,7 +49,7 @@
 
       <div class="bottom">
         <div class="buttons">
-          <button id = 'not-completed-tasks'>Sort not completed</button>
+          <button id = 'not-completed-tasks'>Sort incomplete</button>
           <button id = 'show-all'>Show all</button>
         </div>
       </div>
