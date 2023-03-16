@@ -42,17 +42,23 @@ class Task {
     let p = document.createElement("p");
     p.innerText = this.text;
   
-    let input = document.createElement("div");
-    input.classList.add('checked')
+    let input = document.createElement("input");
     input.addEventListener("click", () => this.changeState(this.div));
-    // input.type = "checkbox";
+    input.type = "checkbox";
+
+    let editButton = document.createElement('div');
+    editButton.classList.add('edit-button');
+    editButton.addEventListener('click', () => this.editTask(p));
+
   
     let deleteButton = document.createElement('div');
     deleteButton.dataset.id = 'delete';
-    deleteButton.addEventListener('click', () => this.deleteTask(this.div));
+    deleteButton.addEventListener('click', () => this.deleteTask());
   
-    this.div.append(p);
+
     this.div.append(input);
+    this.div.append(p);
+    this.div.append(editButton);
     this.div.append(deleteButton);
   
     if (this.isDone) {
@@ -75,6 +81,22 @@ class Task {
   deleteTask() {
     this.div.remove();
     this.isDeleted = true;
+  }
+
+  editTask(element) {
+    element.innerText = '';
+    let newInput = document.createElement('input');
+    newInput.setAttribute('type', 'text');
+    element.append(newInput);
+    newInput.addEventListener('keydown', function (e) {
+      let newValue = newInput.value;
+      if (e.code == "Enter") {
+        element.innerText = newValue;
+      }
+    })
+    
+    
+
   }
 
 }

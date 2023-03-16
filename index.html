@@ -14,16 +14,17 @@
 <body>
 
   <style>
-    .checked{
-      background: url(img/check.png) 0 0/auto 100% no-repeat ;
-      cursor: pointer;
-    }
 
+    
     [data-id="delete"]{
  
-      background: url(img/delete.png)  0 0/auto 100% no-repeat ;
+      background: url(img/delete.png)  0 0/25px 25px no-repeat ;
       cursor: pointer;
  
+    }
+
+    .edit-button{
+      background: url(img/1891025_circle_compose_draw_edit_write_icon.png) 0 0/25px 25px no-repeat ;
     }
   </style>
 
@@ -38,6 +39,7 @@
   
         <div class="input-panel">
           <input type="text" id="task-name-input" placeholder="Type a new task">
+          <input type="date" id = 'date-input'>
           <button id="add-task-btn">ADD</button>
         </div>
   
