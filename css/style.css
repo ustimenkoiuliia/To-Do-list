@@ -83,7 +83,8 @@ button{
 
 
 .task p {
-  min-width: 85%;
+  min-width: 70%;
+  max-width: 70%;
   min-height: 25px;
   line-height: 25px;
   margin: 0 5px;
@@ -92,6 +93,11 @@ button{
 
 .task div {
   width: 10%;
+}
+
+.task.expired {
+  border: 2px solid red;
+  color: red;
 }
 
 .completed {

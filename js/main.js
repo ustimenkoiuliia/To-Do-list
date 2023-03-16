@@ -4,6 +4,10 @@ let startMessage = document.querySelector("#start-message");
 let taskList = document.querySelector(".task-list");
 let notCompleted = document.querySelector('#not-completed-tasks');
 let showAll = document.querySelector('#show-all');
+let dateInput = document.querySelector('#date-input');
+
+
+
 let tasks = [];
 
 addTaskButton.addEventListener("click", addTaskHandler);
@@ -13,7 +17,12 @@ taskNameInput.addEventListener("keydown", function (e) {
 })
 
 notCompleted.addEventListener('click', showNotCompleted);
-showAll.addEventListener('click', showAllTasks)
+showAll.addEventListener('click', showAllTasks);
+
+dateInput.addEventListener('keydown', function (e) {
+  if (e.code == 'Enter') addTaskHandler();
+})
+
 
 function addTaskHandler() {
   if (taskNameInput.value) {
@@ -54,10 +63,12 @@ class Task {
     let deleteButton = document.createElement('div');
     deleteButton.dataset.id = 'delete';
     deleteButton.addEventListener('click', () => this.deleteTask());
-  
+
 
     this.div.append(input);
     this.div.append(p);
+
+    dateInput.addEventListener('change', this.toSettleDate(this.div, p));
     this.div.append(editButton);
     this.div.append(deleteButton);
   
@@ -69,6 +80,8 @@ class Task {
     if (!this.isDeleted) {
       element.append(this.div);
     }
+
+  
 
     
   }
@@ -94,10 +107,24 @@ class Task {
         element.innerText = newValue;
       }
     })
-    
-    
-
   }
+
+  toSettleDate(element, paragraph) {
+    let date = dateInput.value;
+    let dateIcon = document.createElement('div')
+    dateIcon.classList.add('date')
+    dateIcon.innerText = date;
+    element.append(dateIcon)
+    dateInput.value = '';
+
+    let now = Date.now();
+    if (new Date(now) > new Date(date)) {
+      element.classList.add('expired');
+      paragraph.innerText = this.text + ' ' + ' Expired!!!'
+    }
+  }
+
+
 
 }
 
@@ -117,3 +144,4 @@ function showAllTasks() {
   taskList.innerHTML = '';
   tasks.forEach(task => task.createTask(taskList))
 }
+
