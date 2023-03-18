@@ -5,10 +5,11 @@ let taskList = document.querySelector(".task-list");
 let notCompleted = document.querySelector('#not-completed-tasks');
 let showAll = document.querySelector('#show-all');
 let dateInput = document.querySelector('#date-input');
-
+let date = dateInput.value;
 
 
 let tasks = [];
+
 
 addTaskButton.addEventListener("click", addTaskHandler);
 
@@ -24,6 +25,7 @@ dateInput.addEventListener('keydown', function (e) {
 })
 
 
+
 function addTaskHandler() {
   if (taskNameInput.value) {
     if (!startMessage.hidden) startMessage.hidden = true;
@@ -31,10 +33,13 @@ function addTaskHandler() {
     newTask.createTask(taskList);
     tasks.push(newTask);
     taskNameInput.value = "";
+
+
   } else {
     alert('Enter task name')
   }
 }
+
 
 class Task {
   constructor(text) {
@@ -81,7 +86,13 @@ class Task {
       element.append(this.div);
     }
 
-  
+    if (this.div.querySelector(".date")) {
+      let currentDate = new Date();
+      let taskDate = new Date(this.div.querySelector(".date").textContent);
+      if (taskDate < currentDate) {
+        this.div.classList.add('expired');
+      }
+    }
 
     
   }
@@ -129,8 +140,6 @@ class Task {
 }
 
 
-
-
 function showNotCompleted() {
   taskList.innerHTML = '';
   for (let task of tasks) {
@@ -143,5 +152,17 @@ function showNotCompleted() {
 function showAllTasks() {
   taskList.innerHTML = '';
   tasks.forEach(task => task.createTask(taskList))
+}
+
+
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks = savedTasks;
+  tasks.forEach(task => task.createTask(taskList));
 }
 
