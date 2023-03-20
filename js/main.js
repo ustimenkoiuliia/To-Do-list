@@ -5,7 +5,9 @@ let taskList = document.querySelector(".task-list");
 let notCompleted = document.querySelector('#not-completed-tasks');
 let showAll = document.querySelector('#show-all');
 let dateInput = document.querySelector('#date-input');
-let date = dateInput.value;
+let today = new Date();
+let minDate = today.getFullYear()+'-'+(today.getMonth()+1).toString().padStart(2,'0')+'-'+today.getDate().toString().padStart(2,'0');
+dateInput.setAttribute('min', minDate);
 
 
 let tasks = [];
@@ -29,7 +31,7 @@ dateInput.addEventListener('keydown', function (e) {
 function addTaskHandler() {
   if (taskNameInput.value) {
     if (!startMessage.hidden) startMessage.hidden = true;
-    let newTask = new Task(taskNameInput.value);
+    let newTask = new Task(taskNameInput.value, dateInput.value);
     newTask.createTask(taskList);
     tasks.push(newTask);
     taskNameInput.value = "";
@@ -42,11 +44,13 @@ function addTaskHandler() {
 
 
 class Task {
-  constructor(text) {
+  constructor(text, dueDate) {
     this.text = text;
     this.isDone = false;
     this.div = null;
     this.isDeleted = false;
+    this.dueDate = dueDate;
+    this.currentDate = Date.now();
   }
 
   createTask (element) {
@@ -69,11 +73,14 @@ class Task {
     deleteButton.dataset.id = 'delete';
     deleteButton.addEventListener('click', () => this.deleteTask());
 
+    let dateIcon = document.createElement('div')
+    dateIcon.textContent = this.dueDate;
+    dateInput.value = '';
+
 
     this.div.append(input);
     this.div.append(p);
-
-    dateInput.addEventListener('change', this.toSettleDate(this.div, p));
+    this.div.append(dateIcon);
     this.div.append(editButton);
     this.div.append(deleteButton);
   
@@ -86,15 +93,11 @@ class Task {
       element.append(this.div);
     }
 
-    if (this.div.querySelector(".date")) {
-      let currentDate = new Date();
-      let taskDate = new Date(this.div.querySelector(".date").textContent);
-      if (taskDate < currentDate) {
-        this.div.classList.add('expired');
-      }
+    if (new Date(this.currentDate) >= new Date(this.dueDate)) {
+      this.div.classList.add('expired');
+      p.innerText = this.text + ' ' + 'Expired!!!';
     }
 
-    
   }
 
   changeState (element){
@@ -120,21 +123,20 @@ class Task {
     })
   }
 
-  toSettleDate(element, paragraph) {
-    let date = dateInput.value;
-    let dateIcon = document.createElement('div')
-    dateIcon.classList.add('date')
-    dateIcon.innerText = date;
-    element.append(dateIcon)
-    dateInput.value = '';
+  // toSettleDate(element, paragraph) {
+  //   let date = dateInput.value;
+  //   let dateIcon = document.createElement('div')
+  //   dateIcon.classList.add('date')
+  //   dateIcon.innerText = date;
+  //   element.append(dateIcon)
+  //   dateInput.value = '';
 
-    let now = Date.now();
-    if (new Date(now) > new Date(date)) {
-      element.classList.add('expired');
-      paragraph.innerText = this.text + ' ' + ' Expired!!!'
-    }
-  }
-
+  //   let now = Date.now();
+  //   if (new Date(now) > new Date(date)) {
+  //     element.classList.add('expired');
+  //     paragraph.innerText = this.text + ' ' + ' Expired!!!'
+  //   }
+  // }
 
 
 }
@@ -156,13 +158,22 @@ function showAllTasks() {
 
 
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
 
-function loadTasks() {
-  let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks = savedTasks;
-  tasks.forEach(task => task.createTask(taskList));
+let checkDateButton = document.createElement('div');
+checkDateButton.textContent = 'Check';
+checkDateButton.classList.add('check');
+let bottom = document.querySelector('.bottom');
+bottom.append(checkDateButton);
+checkDateButton.addEventListener('click', checkTasks)
+  
+function checkTasks() {
+  tasks.forEach(task => {
+    const currentDate = new Date();
+    const dueDate = new Date(task.dueDate);
+
+    if (currentDate > dueDate) {
+      task.div.classList.add('expired');
+    } 
+  });
 }
 

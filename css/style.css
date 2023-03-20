@@ -131,3 +131,9 @@ button{
 #show-all{
   width: 50%;
 }
+
+.check{
+  border: 2px solid black;
+  padding: 3px;
+  cursor: pointer;
+}
