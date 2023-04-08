@@ -34,9 +34,9 @@ function addTaskHandler() {
     let newTask = new Task(taskNameInput.value, dateInput.value);
     newTask.createTask(taskList);
     tasks.push(newTask);
+    saveTasks();
     taskNameInput.value = "";
-
-
+ 
   } else {
     alert('Enter task name')
   }
@@ -108,9 +108,13 @@ class Task {
   deleteTask() {
     this.div.remove();
     this.isDeleted = true;
+    this.updateLocalStorage();
   }
 
   editTask(element) {
+    if (this.isDeleted) {
+      return;
+    }
     element.innerText = '';
     let newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
@@ -123,21 +127,10 @@ class Task {
     })
   }
 
-  // toSettleDate(element, paragraph) {
-  //   let date = dateInput.value;
-  //   let dateIcon = document.createElement('div')
-  //   dateIcon.classList.add('date')
-  //   dateIcon.innerText = date;
-  //   element.append(dateIcon)
-  //   dateInput.value = '';
-
-  //   let now = Date.now();
-  //   if (new Date(now) > new Date(date)) {
-  //     element.classList.add('expired');
-  //     paragraph.innerText = this.text + ' ' + ' Expired!!!'
-  //   }
-  // }
-
+  updateLocalStorage() {
+    tasks = tasks.filter(task => !task.isDeleted); 
+    localStorage.setItem("tasks", JSON.stringify(tasks)); 
+  }
 
 }
 
@@ -145,7 +138,7 @@ class Task {
 function showNotCompleted() {
   taskList.innerHTML = '';
   for (let task of tasks) {
-    if (!task.isDone) {
+    if (!task.isDone || !task.isDeleted) {
     task.createTask(taskList)
   }
 }
@@ -153,27 +146,27 @@ function showNotCompleted() {
 
 function showAllTasks() {
   taskList.innerHTML = '';
-  tasks.forEach(task => task.createTask(taskList))
+  for (let task of tasks) {
+    if (!task.isDeleted) {
+      task.createTask(taskList)
+    }
+  }
+}
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
 
 
-let checkDateButton = document.createElement('div');
-checkDateButton.textContent = 'Check';
-checkDateButton.classList.add('check');
-let bottom = document.querySelector('.bottom');
-bottom.append(checkDateButton);
-checkDateButton.addEventListener('click', checkTasks)
-  
-function checkTasks() {
-  tasks.forEach(task => {
-    const currentDate = new Date();
-    const dueDate = new Date(task.dueDate);
 
-    if (currentDate > dueDate) {
-      task.div.classList.add('expired');
-    } 
-  });
-}
+window.addEventListener("load", () => {
+  const createdTasks = JSON.parse(localStorage.getItem("tasks"));
+  if (createdTasks) {
+      tasks = createdTasks.map(task => new Task(task.text, task.dueDate))
+      showAllTasks();
+  }
+});
+
 
